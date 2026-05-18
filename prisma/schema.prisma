@@ -32,9 +32,19 @@ model Book {
   */
   publisherId String  // Foreign key column
   publisher Publisher @relation(fields: [publisherId], references: [id])
+
+  genres    Genre[]
 }
 
 model Publisher {
+  id          String @id @default(uuid())
+  name        String
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Genre {
   id          String @id @default(uuid())
   name        String
   books       Book[]
