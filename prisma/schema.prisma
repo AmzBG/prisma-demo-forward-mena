@@ -25,4 +25,19 @@ model Book {
   title    String
   authorId String
   author   Author @relation(fields: [authorId], references: [id])
+  
+  /**
+  * Publisher many-to-one relationship 
+  * e.g: A Book gets published by a single publisher, whereas a publisher can publish multiple book
+  */
+  publisherId String  // Foreign key column
+  publisher Publisher @relation(fields: [publisherId], references: [id])
+}
+
+model Publisher {
+  id          String @id @default(uuid())
+  name        String
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
