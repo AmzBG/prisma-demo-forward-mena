@@ -14,6 +14,19 @@ async function main() {
     publishers.push(publisher);
   }
   console.log(`Created ${publishers.length} publishers.`);
+
+  // Create couple of genres
+  const genres = [];
+  for (let i = 0; i < 5; ++i) {
+    const genre = await prisma.genre.create({
+      data: {
+        name: faker.music.genre(),
+      },
+    });
+    genres.push(genre);
+  }
+  console.log(`Created ${genres.length} genres.`);
+  
   
   // Create couple of new authors with a book each
   for (let i = 0; i < 5; ++i) {
@@ -26,10 +39,22 @@ async function main() {
             {
               title: faker.book.title(),
               publisherId: publishers[i % publishers.length].id,
+              genres: {
+                connect: [
+                  { id: genres[i % genres.length].id },
+                  { id: genres[(i + 1) % genres.length].id },
+                ],
+              },
             },
             {
               title: faker.book.title(),
               publisherId: publishers[(i + 1) % publishers.length].id,
+              genres: {
+                connect: [
+                  { id: genres[(i + 2) % genres.length].id },
+                  { id: genres[(i + 3) % genres.length].id },
+                ],
+              },
             },
           ],
         },
