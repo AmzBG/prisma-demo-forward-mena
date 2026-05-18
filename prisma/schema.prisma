@@ -13,6 +13,15 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id          String @id @default(uuid())
+  email       String @unique
+  name        String
+  reviews     Review[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Author {
   id          String @id @default(uuid())
   email       String @unique
@@ -27,8 +36,8 @@ model Book {
   title       String
   authorId    String
   author      Author @relation(fields: [authorId], references: [id])
-  publisherId String
-  publisher   Publisher @relation(fields: [publisherId], references: [id])
+  publisherId String?
+  publisher   Publisher? @relation(fields: [publisherId], references: [id], onDelete: SetNull)
   genres      Genre[]
   reviews     Review[] 
   createdAt   DateTime @default(now())
@@ -54,10 +63,11 @@ model Genre {
 model Review {
   id          String @id @default(uuid())
   bookId      String
-  book        Book @relation(fields: [bookId], references: [id])
-  author      String
+  book        Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
   rating      Int
-  comment     String
+  comment     String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
