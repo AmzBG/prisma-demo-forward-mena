@@ -4,7 +4,8 @@
   "description": "This project is for trying out the [Prisma ORM](https://www.prisma.io/) with a PostgreSQL database.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "npx tsx seed.ts"
   },
   "repository": {
     "type": "git",
