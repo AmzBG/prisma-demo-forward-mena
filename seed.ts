@@ -65,6 +65,22 @@ async function main() {
     });
     console.log(`Created author: ${author.name} with ${author.books.length} books.`);
   }
+
+  // Add 2 reviews per book
+  const books = await prisma.book.findMany();
+  for (const book of books) {
+    for (let i = 0; i < 2; ++i) {
+      await prisma.review.create({
+        data: {
+          bookId: book.id,
+          author: faker.person.fullName(),
+          rating: faker.number.int({ min: 1, max: 5 }),
+          comment: faker.lorem.sentence(),
+        },
+      });
+    }
+  }
+  console.log(`Created reviews for ${books.length} books.`);
 }
 
 main()
